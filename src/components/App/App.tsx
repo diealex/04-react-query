@@ -1,6 +1,6 @@
 import css from "./App.module.css";
 import SearchBar from "../SearchBar/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieGrid from "../MovieGrid/MovieGrid";
 import { fetchMovies } from "../../services/movieService";
 import type { Movie } from "../../types/movie";
@@ -37,10 +37,12 @@ export default function App() {
     placeholderData: keepPreviousData,
   });
 
+  useEffect(() => {
+    if (data?.results.length === 0) notify();
+  }, [data]);
   const totalPages = data?.total_pages ?? 0;
   const movies = data?.results;
 
-  if (movies && movies.length === 0) notify();
   return (
     <div className={css.app}>
       <Toaster />
